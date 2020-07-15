@@ -7,9 +7,14 @@ public class Printer {
     private int numberOfPages;
     private boolean duplexPrinter;
 
-    public Printer(int tonerLevel, int numberOfPages, boolean duplexPrinter) {
+    public Printer(int tonerLevel, boolean duplexPrinter) {
+        if(tonerLevel>100){
+            tonerLevel = 100;
+        } else if(tonerLevel < 0){
+            tonerLevel = 0;
+        }
         this.tonerLevel = tonerLevel;
-        this.numberOfPages = numberOfPages;
+        this.numberOfPages = 0;
         this.duplexPrinter = duplexPrinter;
     }
 
@@ -50,10 +55,12 @@ public class Printer {
     public void printPage(int newPage){
         if(isDuplexPrinter() && getTonerLevel() > 0 && getTonerLevel() <= 100){
             System.out.println("Printing new duplex pages..");
+            int PagesTobePrinted = 0;
             if(getTonerLevel() >= 10 * newPage){
-                numberOfPages += 2 * newPage;
+                PagesTobePrinted = (newPage/2 + newPage%2);
                 tonerLevel -= 10 * newPage;
-                System.out.println("Now the number of pages is: "+getNumberOfPages());
+                numberOfPages += PagesTobePrinted;
+                System.out.println("Now the number of pages is: "+numberOfPages);
             } else {
                 System.out.println("Not enough toner. You will need at least " + 10 * newPage + "% toner.");
             }
